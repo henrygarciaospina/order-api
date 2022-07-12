@@ -1,6 +1,8 @@
 package com.codmind.orderapi.controller;
 
 import com.codmind.orderapi.entity.Product;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -22,9 +24,18 @@ public class ProductController {
         }
     }
 
+    @GetMapping(value="/products")
     public List<Product> findAll(){
         return this.products;
     }
 
-
+    @GetMapping(value="/products/{productId}")
+    public Product findById(@PathVariable("productId") Long productId){
+        for(Product prod: this.products) {
+            if(prod.getId().longValue() == productId.longValue()){
+                return prod;
+            }
+        }
+        return null;
+    }
 }
