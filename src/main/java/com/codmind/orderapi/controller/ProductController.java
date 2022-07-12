@@ -42,4 +42,15 @@ public class ProductController {
         this.products.add(product);
         return product;
     }
+    @PutMapping(value="/products")
+    public Product update(@RequestBody Product product){
+        for(Product prod: this.products) {
+            if(prod.getId().longValue() == product.getId().longValue()){
+                prod.setName(product.getName());
+                return prod;
+            }
+         }
+        throw new RuntimeException("No existe el producto");
+    }
+
 }
