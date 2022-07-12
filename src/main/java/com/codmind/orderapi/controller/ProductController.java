@@ -21,12 +21,6 @@ public class ProductController {
            ) ;
         }
     }
-
-    @GetMapping(value="/products")
-    public List<Product> findAll(){
-        return this.products;
-    }
-
     @GetMapping(value="/products/{productId}")
     public Product findById(@PathVariable("productId") Long productId){
         for(Product prod: this.products) {
@@ -36,7 +30,24 @@ public class ProductController {
         }
         return null;
     }
+    @DeleteMapping(value="/products/{productId}")
+    public void delete(@PathVariable("productId") Long productId){
+        Product deleteProduct = null;
+        for(Product prod: this.products) {
+            if(prod.getId().longValue() == productId.longValue()){
+                deleteProduct = prod;
+                break;
+            }
+        }
 
+        if(deleteProduct == null) throw new RuntimeException("No existe el producto");
+
+        this.products.remove(deleteProduct);
+    }
+    @GetMapping(value="/products")
+    public List<Product> findAll(){
+        return this.products;
+    }
     @PostMapping(value="/products")
     public Product create(@RequestBody Product product){
         this.products.add(product);
@@ -52,5 +63,4 @@ public class ProductController {
          }
         throw new RuntimeException("No existe el producto");
     }
-
 }
