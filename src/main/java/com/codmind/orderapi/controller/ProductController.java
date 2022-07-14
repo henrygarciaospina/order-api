@@ -1,13 +1,18 @@
 package com.codmind.orderapi.controller;
 
 import com.codmind.orderapi.entity.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import repository.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class ProductController {
+
+    @Autowired
+    private ProductRepository productRepository;
 
     private final List<Product> products = new ArrayList<>();
 
