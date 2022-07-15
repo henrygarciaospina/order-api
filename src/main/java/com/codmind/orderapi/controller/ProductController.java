@@ -2,15 +2,16 @@ package com.codmind.orderapi.controller;
 
 import com.codmind.orderapi.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import repository.ProductRepository;
+import com.codmind.orderapi.repository.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class ProductController {
-
     @Autowired
     private ProductRepository productRepository;
 
@@ -27,13 +28,11 @@ public class ProductController {
         }
     }
     @GetMapping(value="/products/{productId}")
-    public Product findById(@PathVariable("productId") Long productId){
-        for(Product prod: this.products) {
-            if(prod.getId().longValue() == productId.longValue()){
-                return prod;
-            }
-        }
-        return null;
+    public ResponseEntity<Product> findById(@PathVariable("productId") Long productId){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("N o existe el producto"));
+
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
     @DeleteMapping(value="/products/{productId}")
     public void delete(@PathVariable("productId") Long productId){
