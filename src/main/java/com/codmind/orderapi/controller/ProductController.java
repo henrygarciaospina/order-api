@@ -30,7 +30,7 @@ public class ProductController {
     @GetMapping(value="/products/{productId}")
     public ResponseEntity<Product> findById(@PathVariable("productId") Long productId){
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("N o existe el producto"));
+                .orElseThrow(() -> new RuntimeException("No existe el producto"));
 
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
