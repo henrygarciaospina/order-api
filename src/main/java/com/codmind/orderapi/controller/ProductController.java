@@ -14,20 +14,6 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductRepository productRepository;
-
-    private final List<Product> products = new ArrayList<>();
-
-    public ProductController() {
-
-        for (int c = 0; c <= 10; c++) {
-            products.add(Product.builder()
-                    .id((c + 1L))
-                    .name("Product " + (c + 1L))
-                    .build()
-            );
-        }
-    }
-
     @GetMapping(value = "/products/{productId}")
     public ResponseEntity<Product> findById(@PathVariable("productId") Long productId) {
         Product product = productRepository.findById(productId)
