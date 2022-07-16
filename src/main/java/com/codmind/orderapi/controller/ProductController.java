@@ -51,9 +51,9 @@ public class ProductController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
     @PostMapping(value="/products")
-    public Product create(@RequestBody Product product){
-        this.products.add(product);
-        return product;
+    public ResponseEntity<Product> create(@RequestBody Product product){
+        Product newProduct = productRepository.save(product);
+        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
     }
     @PutMapping(value="/products")
     public Product update(@RequestBody Product product){
