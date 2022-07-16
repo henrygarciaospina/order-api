@@ -44,8 +44,11 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping(value="/products")
-    public List<Product> findAll(){
-        return this.products;
+    public ResponseEntity<List<Product>> findAll(){
+
+        List<Product> products = productRepository.findAll();
+
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
     @PostMapping(value="/products")
     public Product create(@RequestBody Product product){
