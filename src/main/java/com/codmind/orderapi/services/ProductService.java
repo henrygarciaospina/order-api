@@ -32,6 +32,7 @@ public class ProductService {
     }
 
     //Crea registro
+    @Transactional
     public Product save(Product product){
         if(product.getId() == null ){
             return productRepository.save(product);
