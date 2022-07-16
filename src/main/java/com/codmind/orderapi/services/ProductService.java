@@ -31,11 +31,12 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product create(Product product) {
-        return productRepository.save(product);
-    }
-
-    public Product update(Product product) {
+    //Crea registro
+    public Product save(Product product){
+        if(product.getId() == null ){
+            return productRepository.save(product);
+        }
+        //Actualiza registro
         Product existProduct = productRepository.findById(product.getId())
                 .orElseThrow(() -> new RuntimeException(MESSAGE));
 
@@ -44,5 +45,4 @@ public class ProductService {
 
         return productRepository.save(existProduct);
     }
-
 }
