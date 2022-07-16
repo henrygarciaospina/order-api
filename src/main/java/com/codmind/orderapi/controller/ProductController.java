@@ -35,18 +35,13 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
     @DeleteMapping(value="/products/{productId}")
-    public void delete(@PathVariable("productId") Long productId){
-        Product deleteProduct = null;
-        for(Product prod: this.products) {
-            if(prod.getId().longValue() == productId.longValue()){
-                deleteProduct = prod;
-                break;
-            }
-        }
+    public ResponseEntity<Void> delete(@PathVariable("productId") Long productId){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("No existe el producto"));
 
-        if(deleteProduct == null) throw new RuntimeException("No existe el producto");
+        productRepository.delete(product);
 
-        this.products.remove(deleteProduct);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping(value="/products")
     public List<Product> findAll(){
