@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.codmind.orderapi.repository.ProductRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
