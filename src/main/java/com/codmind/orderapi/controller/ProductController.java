@@ -1,5 +1,6 @@
 package com.codmind.orderapi.controller;
 
+import com.codmind.orderapi.dtos.ProductDTO;
 import com.codmind.orderapi.entity.Product;
 import com.codmind.orderapi.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +9,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 public class ProductController {
     @Autowired
     private ProductService productService;
     @GetMapping(value = "/products/{productId}")
-    public ResponseEntity<Product> findById(@PathVariable("productId") Long productId) {
+    public ResponseEntity<ProductDTO> findById(@PathVariable("productId") Long productId) {
         Product product = productService.findById(productId);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+
+        ProductDTO productDTO = ProductDTO.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .price(product.getPrice())
+                .build();
+
+        return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }
     @DeleteMapping(value = "/products/{productId}")
     public ResponseEntity<Void> delete(@PathVariable("productId") Long productId) {
@@ -23,18 +33,41 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping(value = "/products")
-    public ResponseEntity<List<Product>> findAll() {
+    public ResponseEntity<List<ProductDTO>> findAll() {
         List<Product> products = productService.findAll();
-        return new ResponseEntity<>(products, HttpStatus.OK);
+
+        List<ProductDTO> dtoProducts = products.stream().map(product -> {
+            return ProductDTO.builder()
+                    .id(product.getId())
+                    .name(product.getName())
+                    .price(product.getPrice())
+                    .build();
+        })
+       .collect(Collectors.toList());
+
+        return new ResponseEntity<>(dtoProducts, HttpStatus.OK);
     }
     @PostMapping(value = "/products")
-    public ResponseEntity<Product> create(@RequestBody Product product) {
-        Product newProduct = productService.save(product);
-        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+    public ResponseEntity<ProductDTO> create(@RequestBody Product product) {
+        productService.save(product);
+
+        ProductDTO productDto = ProductDTO.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .price(product.getPrice())
+                .build();
+
+        return new ResponseEntity<>(productDto, HttpStatus.CREATED);
     }
     @PutMapping(value = "/products")
-    public ResponseEntity<Product> update(@RequestBody Product product) {
+    public ResponseEntity<ProductDTO> update(@RequestBody Product product) {
         Product updateProduct = productService.save(product);
-        return new ResponseEntity<>(updateProduct, HttpStatus.OK);
+
+        ProductDTO productDto = ProductDTO.builder()
+                .id(updateProduct.getId())
+                .name(updateProduct.getName())
+                .price(updateProduct.getPrice())
+                .build();
+        return new ResponseEntity<>(productDto, HttpStatus.OK);
     }
 }
