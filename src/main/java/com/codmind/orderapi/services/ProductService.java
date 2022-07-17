@@ -26,7 +26,6 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException(MESSAGE));
         productRepository.delete(product);
     }
-
     public List<Product> findAll() {
         return productRepository.findAll();
     }
