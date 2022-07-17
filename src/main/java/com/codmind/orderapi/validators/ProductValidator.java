@@ -7,7 +7,7 @@ public class ProductValidator {
     private ProductValidator() {
     }
 
-    public static void saveProduct(Product product) {
+    public static void save(Product product) {
         if((product.getName() == null) || product.getName().trim().isEmpty()) throw (new RuntimeException("El nombre es requerido"));
         if(product.getName().length() > 100) throw (new RuntimeException("El nombre debe tener máximo 100 caracteres"));
         if(product.getPrice() == null) throw (new RuntimeException("El precio es requerido"));

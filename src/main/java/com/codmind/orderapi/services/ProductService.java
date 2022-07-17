@@ -2,6 +2,7 @@ package com.codmind.orderapi.services;
 
 import com.codmind.orderapi.entity.Product;
 import com.codmind.orderapi.repository.ProductRepository;
+import com.codmind.orderapi.validators.ProductValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,8 @@ public class ProductService {
     //Crea registro
     @Transactional
     public Product save(Product product){
+
+        ProductValidator.save(product);
         if(product.getId() == null ){
             return productRepository.save(product);
         }
