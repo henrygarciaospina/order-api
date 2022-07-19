@@ -1,6 +1,7 @@
 package com.codmind.orderapi.services;
 
 import com.codmind.orderapi.entity.Product;
+import com.codmind.orderapi.exceptions.NoDataFoundException;
 import com.codmind.orderapi.repository.ProductRepository;
 import com.codmind.orderapi.validators.ProductValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,13 @@ public class ProductService {
 
     public Product findById(Long productId) {
         return productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException(MESSAGE));
+                .orElseThrow(() -> new NoDataFoundException(MESSAGE));
     }
 
     @Transactional
     public void delete(Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException(MESSAGE));
+                .orElseThrow(() -> new NoDataFoundException(MESSAGE));
         productRepository.delete(product);
     }
     public List<Product> findAll(Pageable page) {
@@ -42,7 +43,7 @@ public class ProductService {
         }
         //Actualiza registro
         Product existProduct = productRepository.findById(product.getId())
-                .orElseThrow(() -> new RuntimeException(MESSAGE));
+                .orElseThrow(() -> new NoDataFoundException(MESSAGE));
 
         existProduct.setName(product.getName());
         existProduct.setPrice(product.getPrice());
