@@ -1,9 +1,12 @@
 package com.codmind.orderapi.services;
 
 import com.codmind.orderapi.entity.Product;
+import com.codmind.orderapi.exceptions.GeneralServiceException;
 import com.codmind.orderapi.exceptions.NoDataFoundException;
+import com.codmind.orderapi.exceptions.ValidateServiceException;
 import com.codmind.orderapi.repository.ProductRepository;
 import com.codmind.orderapi.validators.ProductValidator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class ProductService {
     @Autowired
@@ -19,27 +23,57 @@ public class ProductService {
     static final String MESSAGE = "No existe el producto";
 
     public Product findById(Long productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new NoDataFoundException(MESSAGE));
+        try{
+            return productRepository.findById(productId)
+                    .orElseThrow(() -> new NoDataFoundException(MESSAGE));
+        } catch (ValidateServiceException | NoDataFoundException e){
+            log.info(e.getMessage(), e);
+            throw e;
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            throw new GeneralServiceException(e.getMessage(), e);
+        }
     }
-
     @Transactional
     public void delete(Long productId) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new NoDataFoundException(MESSAGE));
-        productRepository.delete(product);
+       try{
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new NoDataFoundException(MESSAGE));
+            productRepository.delete(product);
+        } catch (ValidateServiceException | NoDataFoundException e){
+            log.info(e.getMessage(), e);
+            throw e;
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            throw new GeneralServiceException(e.getMessage(), e);
+        }
     }
     public List<Product> findAll(Pageable page) {
-        return productRepository.findAll(page).toList();
+        try{
+            return productRepository.findAll(page).toList();
+        } catch (ValidateServiceException | NoDataFoundException e){
+            log.info(e.getMessage(), e);
+            throw e;
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            throw new GeneralServiceException(e.getMessage(), e);
+        }
     }
 
     //Crea registro
     @Transactional
     public Product save(Product product){
-
-        ProductValidator.save(product);
-        if(product.getId() == null ){
-            return productRepository.save(product);
+        try{
+            ProductValidator.save(product);
+            if(product.getId() == null ){
+                return productRepository.save(product);
+            }
+        } catch (ValidateServiceException | NoDataFoundException e){
+            log.info(e.getMessage(), e);
+            throw e;
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            throw new GeneralServiceException(e.getMessage(), e);
         }
         //Actualiza registro
         Product existProduct = productRepository.findById(product.getId())
