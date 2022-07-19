@@ -26,7 +26,7 @@ public class ProductService {
         try{
             return productRepository.findById(productId)
                     .orElseThrow(() -> new NoDataFoundException(MESSAGE));
-        } catch (ValidateServiceException | NoDataFoundException e){
+        } catch (NoDataFoundException | ValidateServiceException  e){
             log.info(e.getMessage(), e);
             throw e;
         }catch (Exception e){
@@ -40,7 +40,7 @@ public class ProductService {
             Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new NoDataFoundException(MESSAGE));
             productRepository.delete(product);
-        } catch (ValidateServiceException | NoDataFoundException e){
+        } catch (NoDataFoundException | ValidateServiceException e){
             log.info(e.getMessage(), e);
             throw e;
         }catch (Exception e){
@@ -51,7 +51,7 @@ public class ProductService {
     public List<Product> findAll(Pageable page) {
         try{
             return productRepository.findAll(page).toList();
-        } catch (ValidateServiceException | NoDataFoundException e){
+        } catch (NoDataFoundException | ValidateServiceException e){
             log.info(e.getMessage(), e);
             throw e;
         }catch (Exception e){
@@ -68,7 +68,7 @@ public class ProductService {
             if(product.getId() == null ){
                 return productRepository.save(product);
             }
-        } catch (ValidateServiceException | NoDataFoundException e){
+        } catch (NoDataFoundException | ValidateServiceException e){
             log.info(e.getMessage(), e);
             throw e;
         }catch (Exception e){
