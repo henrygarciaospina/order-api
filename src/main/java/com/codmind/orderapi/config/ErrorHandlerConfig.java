@@ -32,7 +32,7 @@ public class ErrorHandlerConfig extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> noDataFoundException(NoDataFoundException e, WebRequest request){
         log.info(e.getMessage(), e);
         WrapperResponse<?> response = new WrapperResponse<>(false, e.getMessage(), null);
-        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(GeneralServiceException.class)
     public ResponseEntity<?> generalServiceException(GeneralServiceException e, WebRequest request){

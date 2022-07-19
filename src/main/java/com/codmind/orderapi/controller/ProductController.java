@@ -4,6 +4,7 @@ import com.codmind.orderapi.converters.ProductConverter;
 import com.codmind.orderapi.dtos.ProductDTO;
 import com.codmind.orderapi.entity.Product;
 import com.codmind.orderapi.services.ProductService;
+import com.codmind.orderapi.utils.WrapperResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +21,11 @@ public class ProductController {
 
     private final ProductConverter productConverter = new ProductConverter();
     @GetMapping(value = "/products/{productId}")
-    public ResponseEntity<ProductDTO> findById(@PathVariable("productId") Long productId) {
+    public  ResponseEntity<WrapperResponse<ProductDTO>> findById(@PathVariable("productId") Long productId) {
         Product product = productService.findById(productId);
         ProductDTO productDTO = productConverter.fromEntity(product);
-        return new ResponseEntity<>(productDTO, HttpStatus.OK);
+        WrapperResponse<ProductDTO> response = new WrapperResponse<>(true, "success", productDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @DeleteMapping(value = "/products/{productId}")
     public ResponseEntity<Void> delete(@PathVariable("productId") Long productId) {
