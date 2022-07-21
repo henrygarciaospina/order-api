@@ -1,6 +1,7 @@
 package com.codmind.orderapi.entity;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -39,13 +40,13 @@ public class OrderLine {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         OrderLine orderLine = (OrderLine) o;
-        return id.equals(orderLine.id);
+        return id != null && Objects.equals(id, orderLine.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return getClass().hashCode();
     }
 }
