@@ -45,17 +45,17 @@ public class ProductController {
                 .createResponse(HttpStatus.OK);
     }
     @PostMapping(value = "/products")
-    public ResponseEntity<ProductDTO> create(@RequestBody ProductDTO productDTO) {
-        Product newProduct = productService.save(productConverter.fromDTO(productDTO));
-        ProductDTO productDto = productConverter.fromEntity(newProduct);
+    public ResponseEntity<ProductDTO> create(@RequestBody ProductDTO product) {
+        Product newProduct = productService.save(productConverter.fromDTO(product));
+        ProductDTO productDTO = productConverter.fromEntity(newProduct);
 
         return new WrapperResponse(true, "success", productDTO)
                 .createResponse(HttpStatus.CREATED);
     }
     @PutMapping(value = "/products")
-    public ResponseEntity<ProductDTO> update(@RequestBody ProductDTO productDTO) {
-        Product updateProduct = productService.save(productConverter.fromDTO(productDTO));
-        ProductDTO productDto = productConverter.fromEntity(updateProduct);
+    public ResponseEntity<ProductDTO> update(@RequestBody ProductDTO product) {
+        Product updateProduct = productService.save(productConverter.fromDTO(product));
+        ProductDTO productDTO = productConverter.fromEntity(updateProduct);
 
         return new WrapperResponse(true, "success", productDTO)
                 .createResponse(HttpStatus.OK);
