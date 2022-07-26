@@ -16,8 +16,8 @@ import java.util.List;
 @RestController
 public class OrderController {
 
-    private static final OrderConverter orderConverter = new OrderConverter();
-
+    @Autowired
+    private  OrderConverter orderConverter;
     @Autowired
     private OrderService orderService;
 

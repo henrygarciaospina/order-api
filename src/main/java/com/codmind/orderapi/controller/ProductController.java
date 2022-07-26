@@ -18,7 +18,9 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
-    private final ProductConverter productConverter = new ProductConverter();
+
+    @Autowired
+    private ProductConverter productConverter;
     @GetMapping(value = "/products/{productId}")
     public  ResponseEntity<WrapperResponse<ProductDTO>> findById(@PathVariable("productId") Long productId) {
         Product product = productService.findById(productId);
