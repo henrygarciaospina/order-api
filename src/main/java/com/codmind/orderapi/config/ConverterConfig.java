@@ -2,6 +2,7 @@ package com.codmind.orderapi.config;
 
 import com.codmind.orderapi.converters.OrderConverter;
 import com.codmind.orderapi.converters.ProductConverter;
+import com.codmind.orderapi.converters.UserConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,5 +24,9 @@ public class ConverterConfig {
     public OrderConverter getOrderConverter(){
         DateTimeFormatter format = DateTimeFormatter.ofPattern(datetimeFormat);
         return new OrderConverter(format, getProductConverter());
+    }
+    @Bean
+    public UserConverter getUserConverter(){
+        return new UserConverter();
     }
 }
