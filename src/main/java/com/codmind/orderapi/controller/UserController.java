@@ -1,6 +1,8 @@
 package com.codmind.orderapi.controller;
 
 import com.codmind.orderapi.converters.UserConverter;
+import com.codmind.orderapi.dtos.LoginRequestDTO;
+import com.codmind.orderapi.dtos.LoginResponseDTO;
 import com.codmind.orderapi.dtos.SignupRequestDTO;
 import com.codmind.orderapi.dtos.UserDTO;
 import com.codmind.orderapi.entity.User;
@@ -25,5 +27,10 @@ public class UserController {
         User user = userService.createUser(userConverter.signup(request));
         return new WrapperResponse<>(true, "success", userConverter.fromEntity(user))
                 .createResponse();
+    }
+    @PostMapping(value = "/login")
+    public ResponseEntity<WrapperResponse<LoginResponseDTO>> login(@RequestBody LoginRequestDTO request){
+        LoginResponseDTO response = userService.login(request);
+        return new WrapperResponse<>(true, "success", response).createResponse();
     }
 }
